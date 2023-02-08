@@ -76,6 +76,8 @@ Color options are: blue, orange, green, purple, and black.')
             await rollHeroQuestCombatDice(message, [{'face': 'skull-purple.png', 'numOfFaces': 2}, {'face': 'doubleskull-purple.png', 'numOfFaces': 1}, {'face': 'whiteshield-purple.png', 'numOfFaces': 1}, {'face': 'doublewhiteshield-purple.png', 'numOfFaces': 1}, {'face': 'blackshield-purple.png', 'numOfFaces': 1}], len(diceRolls))
         elif (params[1] == 'black'):
             await rollHeroQuestCombatDice(message, [{'face': 'skull-black.png', 'numOfFaces': 4}, {'face': 'whiteshield-black.png', 'numOfFaces': 1}, {'face': 'blackshield-black.png', 'numOfFaces': 1}], len(diceRolls))
+        elif (params[1] == 'white'):
+            await rollHeroQuestCombatDice(message, [{'face': 'skull.png', 'numOfFaces': 3}, {'face': 'whiteshield.png', 'numOfFaces': 2}, {'face': 'blackshield.png', 'numOfFaces': 1}], len(diceRolls))
         else:
             await message.channel.send('That color dice set is not available. Available colors are blue, orange, green, purple, and black.')
     else:
