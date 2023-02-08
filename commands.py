@@ -60,8 +60,8 @@ async def heroquest_roll(message, param):
             diceRolls.append(random.randint(1, 6))
     else:
         await message.channel.send(f'HeroQuest combat roll command usage: !hqroll # _[color]_ (Example: !hqroll 3). Max roll of 15.\n \
-                                   Color is optional, but if included will roll the German variant dice.\n \
-                                   Color options are: blue, orange, green, purple, and black.')
+Color is optional, but if included will roll the German variant dice.\n \
+Color options are: blue, orange, green, purple, and black.')
         return
     
     # A possible optional color was requested.
