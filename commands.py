@@ -25,7 +25,8 @@ async def help(message, param):
     if (len(param) == 0):
         await message.channel.send(f'Command List:\n \
 !roll - Roll a specified set of dice faces. For example, if you\'d like to roll a 2d6 type: !roll 2d6\n \
-!hqroll - Roll the HeroQuest combat dice. For example, if you\'d like to roll 3 combat dice type: !hqroll 3\n')
+!hqroll - Roll the HeroQuest combat dice. For example, if you\'d like to roll 3 combat dice type: !hqroll 3\n \
+Use !help _command_ to get more specific information about an available command.')
     elif (param == 'roll'):
         await message.channel.send(f'**Roll standard dice**:\n \
 To roll standard dice use the _!roll_ command followed by the number of dice you wish to roll (up to 10), followed by \
@@ -34,7 +35,7 @@ how many sides each die will have (up to 100).\n_Examples: !roll 2d6, !roll 1d20
         await message.channel.send(f'**Roll HeroQuest dice**:\n \
 To roll HeroQuest dice use the _!hqroll_ command followed by the number of dice you wish to roll (up to 10), followed by \
 how many sides each die will have (up to 100).\nOptionally, you can include one of the 5 German variant dice colors to \
-roll that. Available variant dice colors are blue, orange, green, purple, and black.\n_Examples: !hqroll 2, !hqroll 6, !hqroll 4 green_')
+roll that. Available variant dice colors are blue, orange, green, purple, yellow, and black.\n_Examples: !hqroll 2, !hqroll 6, !hqroll 4 green_')
 
 async def roll(message, param):
     dice = param.split('d', 1)
@@ -61,7 +62,7 @@ async def heroquest_roll(message, param):
     else:
         await message.channel.send(f'HeroQuest combat roll command usage: !hqroll # _[color]_ (Example: !hqroll 3). Max roll of 15.\n \
 Color is optional, but if included will roll the German variant dice.\n \
-Color options are: blue, orange, green, purple, and black.')
+Color options are: blue, orange, green, purple, yellow, and black.')
         return
     
     # A possible optional color was requested.
@@ -76,10 +77,12 @@ Color options are: blue, orange, green, purple, and black.')
             await rollHeroQuestCombatDice(message, [{'face': 'skull-purple.png', 'numOfFaces': 2}, {'face': 'doubleskull-purple.png', 'numOfFaces': 1}, {'face': 'whiteshield-purple.png', 'numOfFaces': 1}, {'face': 'doublewhiteshield-purple.png', 'numOfFaces': 1}, {'face': 'blackshield-purple.png', 'numOfFaces': 1}], len(diceRolls))
         elif (params[1] == 'black'):
             await rollHeroQuestCombatDice(message, [{'face': 'skull-black.png', 'numOfFaces': 4}, {'face': 'whiteshield-black.png', 'numOfFaces': 1}, {'face': 'blackshield-black.png', 'numOfFaces': 1}], len(diceRolls))
+        elif (params[1] == 'yellow'):
+            await rollHeroQuestCombatDice(message, [{'face': 'skull-yellow.png', 'numOfFaces': 1}, {'face': 'doubleskull-yellow.png', 'numOfFaces': 1}, {'face': 'whiteshield-yellow.png', 'numOfFaces': 1}, {'face': 'doublewhiteshield-yellow.png', 'numOfFaces': 1}, {'face': 'blackshield-yellow.png', 'numOfFaces': 1}, {'face': 'doubleblackshield-yellow.png', 'numOfFaces': 1}], len(diceRolls))
         elif (params[1] == 'white'):
             await rollHeroQuestCombatDice(message, [{'face': 'skull.png', 'numOfFaces': 3}, {'face': 'whiteshield.png', 'numOfFaces': 2}, {'face': 'blackshield.png', 'numOfFaces': 1}], len(diceRolls))
         else:
-            await message.channel.send('That color dice set is not available. Available colors are blue, orange, green, purple, and black.')
+            await message.channel.send('That color dice set is not available. Available colors are blue, orange, green, purple, yellow, and black.')
     else:
         # Standard dice
         await rollHeroQuestCombatDice(message, [{'face': 'skull.png', 'numOfFaces': 3}, {'face': 'whiteshield.png', 'numOfFaces': 2}, {'face': 'blackshield.png', 'numOfFaces': 1}], len(diceRolls))
