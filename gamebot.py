@@ -29,8 +29,6 @@ async def on_message(message):
     command = ""
     params = ""
 
-    print('Message channel id: ' + str(message.channel.id))
-
     if ((not message.guild.id == int(os.getenv('MY_DISCORD_GUILD_ID'))) and message.author.bot == False and not message.attachments and not message.is_system()): 
         if (message.content[0] == '!' and len(message.content) > 1):
 
