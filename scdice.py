@@ -18,7 +18,7 @@ async def checkSpaceCrusadeCombatDiceParameters(message, param):
         totalDiceRolled = totalDiceRolled + numToRoll
         # Ensure both the current numToRoll and the cumulative total dice rolled do not exceed 8, and
         # each color can only be rolled up to 4 times.
-        if (totalDiceRolled > 8 and numToRoll <= 4):
+        if (totalDiceRolled > 8 or numToRoll > 4):
             await message.channel.send('Sorry, but you cannot roll more than 4 of each color dice and/or up to 8 total combat dice in a single command.')
             return
         

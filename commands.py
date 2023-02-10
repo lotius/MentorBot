@@ -76,13 +76,14 @@ async def heroquest_roll(message, param):
         await checkHeroQuestCombatDiceParameters(message, param)
     else:
         await message.channel.send(f'**{message.author.name}** your input pattern is invalid! Please use _!help hqroll_ \
-to review the proper usage of the hqroll_ command.')
+to review the proper usage of the _hqroll_ command.')
         return
 
 async def spacecrusade_roll(message, param):
+    print('Entered space crusade function.')
     # Determine if regex was matched. A combination of a digit followed by a
     # word can be matched up to 2 times as there are only red and white dice in Space Crusade.
-    regex = re.compile(r'^((\d{1}\s[a-zA-Z]+\b\s?){1,2})$')
+    regex = re.compile(r'^(\d{1}\s[a-zA-Z]+\b\s?){1,2}$')
 
     match = re.match(regex, param)
     if match:
