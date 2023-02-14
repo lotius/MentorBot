@@ -2,8 +2,6 @@ import random
 import os
 import re
 
-from discord.ui import Select, View
-from discord.ext import commands
 from hqdice import checkHeroQuestCombatDiceParameters
 from scdice import checkSpaceCrusadeCombatDiceParameters
 
