@@ -54,15 +54,23 @@ you can roll up to 4 white and up to 4 red dice.\n \
 **Examples:** _**!scroll 2 white**, **!scroll 1 red 3 white**, **!sqroll 1 white 2 red**_')
 
 async def roll(message, param):
-    dice = param.split('d', 1)
     diceTotalDetail = []
+    regex = re.compile(r'^(([1-9]|10)?[dD]([1-9][0-9]?$|100))$')
 
-    if (len(dice) != 2 or not can_convert_to_int(dice[0]) or not can_convert_to_int(dice[1]) or int(dice[0]) > 10 or int(dice[1]) > 100):
+    # Guarantee either d# or #d# was entered using the regex pattern.
+    if (re.match(regex, param)):
+        dice = param.split('d', 1)
+
+        # User entered a number after the d only, roll 1 die.
+        if (dice[0] == ''):
+            diceTotalDetail.append(random.randint(1, int(dice[1])))
+        # User entered 1 to 10 dice, and 1 to 100 sides.
+        else:
+            for x in range(int(dice[0])):
+                diceTotalDetail.append(random.randint(1, int(dice[1])))
+    else:
         await message.channel.send('Proper roll format is #d#! (Example: !roll 2d6). Maximum of 10 die and 100 sides.')
         return
-
-    for x in range(int(dice[0])):
-        diceTotalDetail.append(random.randint(1, int(dice[1])))
 
     await message.channel.send(f'**{message.author.name}** rolled **{sum(diceTotalDetail)}** _{diceTotalDetail}_.')
 
