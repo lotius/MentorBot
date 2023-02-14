@@ -36,7 +36,9 @@ Use !help _command_ to get more specific information about an available command.
     elif (param == 'roll'):
         await message.channel.send(f'**Roll standard dice**:\n \
 To roll standard dice use the _**!roll**_ command followed by the number of dice you wish to roll (up to 10), followed by \
-how many sides each die will have (up to 100).\n_Examples: !roll 2d6, !roll 1d20, !roll 3d4_')
+how many sides each die will have (up to 100). If you leave off the number of dice you wish to roll and only input the \
+number of sides for the die to have the bot will roll 1 die (ie !roll d100)\n \
+_Examples: !roll 2d6, !roll d20, !roll 3d4, !roll d100_')
     elif (param == 'hqroll'):
         await message.channel.send(f'**Roll HeroQuest combat dice**:\n \
 To roll HeroQuest dice use the _**!hqroll**_ command followed by the number of dice you wish \
