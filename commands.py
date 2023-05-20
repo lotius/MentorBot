@@ -6,6 +6,7 @@ from hqdice import checkHeroQuestCombatDiceParameters
 from scdice import checkSpaceCrusadeCombatDiceParameters
 
 async def process_command(message, command, param):
+    print("Processing: " + command + " and " + param)
     if (command == 'help'):
         await help(message, param)
     elif (command == 'roll'):
@@ -55,11 +56,15 @@ you can roll up to 4 white and up to 4 red dice.\n \
 
 async def roll(message, param):
     diceTotalDetail = []
+    dice = []
     regex = re.compile(r'^(([1-9]|10)?[dD]([1-9][0-9]?$|100))$')
 
-    # Guarantee either d# or #d# was entered using the regex pattern.
+    # Guarantee either d#, D#, #d# or #D# was entered using the regex pattern.
     if (re.match(regex, param)):
-        dice = param.split('d', 1)
+        if (param.find('d') == -1):
+            dice = param.split('D', 1)
+        else:
+            dice = param.split('d', 1)
 
         # User entered a number after the d only, roll 1 die.
         if (dice[0] == ''):
@@ -69,7 +74,7 @@ async def roll(message, param):
             for x in range(int(dice[0])):
                 diceTotalDetail.append(random.randint(1, int(dice[1])))
     else:
-        await message.channel.send('Proper roll format is #d#! (Example: !roll 2d6). Maximum of 10 die and 100 sides.')
+        await message.channel.send('Proper roll format is #d or #d#! (Examples: !roll 2d6 or !roll d12). Maximum of 10 die and 100 sides.')
         return
 
     await message.channel.send(f'**{message.author.name}** rolled **{sum(diceTotalDetail)}** _{diceTotalDetail}_.')
