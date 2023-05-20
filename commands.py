@@ -6,7 +6,6 @@ from hqdice import checkHeroQuestCombatDiceParameters
 from scdice import checkSpaceCrusadeCombatDiceParameters
 
 async def process_command(message, command, param):
-    print("Processing: " + command + " and " + param)
     if (command == 'help'):
         await help(message, param)
     elif (command == 'roll'):
@@ -61,10 +60,7 @@ async def roll(message, param):
 
     # Guarantee either d#, D#, #d# or #D# was entered using the regex pattern.
     if (re.match(regex, param)):
-        if (param.find('d') == -1):
-            dice = param.split('D', 1)
-        else:
-            dice = param.split('d', 1)
+        dice = param.lower().split('d', 1)
 
         # User entered a number after the d only, roll 1 die.
         if (dice[0] == ''):
