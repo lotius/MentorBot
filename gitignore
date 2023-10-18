@@ -1,0 +1,7 @@
+/images
+/__pycache__
+/notes
+.env
+.env.backup
+MentorBot.code-workspace
+.gitignore

@@ -98,7 +98,7 @@ async def rollHeroQuestCombatDice(message, diceToRoll):
         for coloredFace in currentFace:
             for x in range(0, coloredFace['numOfFaces']):
                 diceFaceCount = diceFaceCount + 1
-                diceImages[diceFaceCount] = cv2.imread('images/hqdice/' + coloredFace['face'], cv2.IMREAD_UNCHANGED)
+                diceImages[diceFaceCount] = cv2.imread('images/hqdice/transparent/' + coloredFace['face'], cv2.IMREAD_UNCHANGED)
 
         # Roll the dice and save the appropriate face to an array
         for x in range(int(currentRequestedFace['numToRoll'])):
