@@ -64,7 +64,8 @@ you can roll up to 4 white and up to 4 red dice.\n \
         await message.channel.send(f'**Roll OrcQuest combat dice**:\n \
 To roll OrcQuest dice use the _**!oqroll**_ command followed by the number of dice you \
 wish to roll, followed by the type of dice you wish to roll. In OrcQuest you can roll up \
-to 3 of a single attack or defense dice and up to 2 badass dice of one single color.\n \
+to 3 of a single attack or defense dice and up to 2 badass dice of one single color. \n\
+Available dice types are whiteattack, whitedefend, greyattack, greydefend, blackattack, blackdefend, greenbadass, bluebadass\n\
 **Examples:** _**!oqroll 2 whiteattack 1 whitedefend**, **oqroll 1 blackattack 1 greydefend 1 whitedefend**, \n\
 **!oqroll 1 whiteattack 1 greyattack 1 greenbadass 2 whitedefend**_')
 

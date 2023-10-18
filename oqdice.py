@@ -43,7 +43,7 @@ are whiteattack, greyattack, blackattack, whitedefend, greydefend, blackdefend, 
         for existingDice in diceToRoll:
             for dieColor in existingDice.values():
                 if (currentColor == dieColor):
-                    await message.channel.send('Sorry, but each die color & type can only be specified once.')
+                    await message.channel.send('Sorry, but each die color/type combination can only be specified once.')
                     return
 
         # Ensure that the same color was not requested more than once in a single roll command.
