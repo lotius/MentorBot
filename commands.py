@@ -14,6 +14,8 @@ async def process_command(message, command, param):
         await roll(message, param)
     elif (command == 'hqroll'):
         await heroquest_roll(message, param)
+    elif (command == 'oqroll'):
+        await orcquest_roll(message, param)
     elif (command == 'rollcolor'):
         await roll_color(message, param)
     elif (command == 'scroll' or command == 'sqroll'):
@@ -44,16 +46,17 @@ _Examples: !roll 2d6, !roll d20, !roll 3d4, !roll d100_')
     elif (param == 'hqroll'):
         await message.channel.send(f'**Roll HeroQuest combat dice**:\n \
 To roll HeroQuest dice use the _**!hqroll**_ command followed by the number of dice you wish \
-to roll (up to 15). Optionally, you can include one of the 5 German variant dice colors \
+to roll (up to 15). Optionally, you can include one of the many German variant dice colors \
 in order to roll that set instead of standard dice, and even multiple colors at once.\n\n \
-Available variant dice colors are blue, orange, green, purple, yellow, and black.\n \
+Available variant dice colors are blue, orange, green, purple, pink, red, yellow, black, \
+sqt, pot, fh, gen, and dread.\n \
 **Examples:** _**!hqroll 2**, **!hqroll 5**, **!hqroll 6 orange**, **!hqroll 4 green**_\n \
 You can also specify multiple dice colors in a single command\n \
 **Examples:** _**!hqroll 2 white 2 orange**, **!hqroll 1 white 3 green 2 blue**_')
     elif (param == 'rollcolor'):
         await message.channel.send(f'**Generate random HeroQuest combat dice color**:\n \
 Generates a random enhanced combat dice color for HeroQuest Fans Twitch rewards!\n \
-Valid colors are: blue, orange, green, purple, yellow, and black.')
+Valid colors are: blue, orange, green, purple, pink, yellow, and black.')
     elif (param == 'scroll' or param == 'sqroll'):
         await message.channel.send(f'**Roll Space Crusade combat dice**:\n \
 To roll Space Crusade dice use the _**!scroll**_ or _**!sqroll**_ command followed by the \
@@ -61,10 +64,10 @@ number of dice you wish to roll, followed by the color you wish to roll. In Spac
 you can roll up to 4 white and up to 4 red dice.\n \
 **Examples:** _**!scroll 2 white**, **!scroll 1 red 3 white**, **!sqroll 1 white 2 red**_')
     elif (param == 'oqroll'):
-        await message.channel.send(f'**Roll OrcQuest combat dice**:\n \
+        await message.channel.send(f'**_Roll OrcQuest combat dice_**:\n\
 To roll OrcQuest dice use the _**!oqroll**_ command followed by the number of dice you \
 wish to roll, followed by the type of dice you wish to roll. In OrcQuest you can roll up \
-to 3 of a single attack or defense dice and up to 2 badass dice of one single color. \n\
+to 3 of a single attack or defense dice and up to 2 badass dice of each color. \n \
 Available dice types are whiteattack, whitedefend, greyattack, greydefend, blackattack, blackdefend, greenbadass, bluebadass\n\
 **Examples:** _**!oqroll 2 whiteattack 1 whitedefend**, **oqroll 1 blackattack 1 greydefend 1 whitedefend**, \n\
 **!oqroll 1 whiteattack 1 greyattack 1 greenbadass 2 whitedefend**_')

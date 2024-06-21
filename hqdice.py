@@ -35,9 +35,11 @@ async def checkHeroQuestCombatDiceParameters(message, param):
         # Ensure that the colors requested are available.
         if (currentColor != 'blue' and currentColor != 'orange' and currentColor != 'green' and \
                 currentColor != 'purple' and currentColor != 'black' and currentColor != 'yellow' \
-                and currentColor != 'white'):
+                and currentColor != 'white' and currentColor != 'pink' and currentColor != 'red' \
+                and currentColor != 'sqt' and currentColor != 'pot' and currentColor != 'fh' \
+                and currentColor != 'gen' and currentColor != 'dread'):
             await message.channel.send('Sorry, but you\'ve included a die color that isn\'t available. Available colors \
-are blue, orange, green, purple, black, yellow or white.')
+are blue, orange, green, purple, black, yellow, pink, white, sqt, pot, fh, gen, and dread.')
             return
         
         for existingDice in diceToRoll:
@@ -64,10 +66,17 @@ are blue, orange, green, purple, black, yellow or white.')
 # 3. The background color of the dice image, defaults to white.
 async def rollHeroQuestCombatDice(message, diceToRoll):
     white = [{'face': 'skull.png', 'numOfFaces': 3}, {'face': 'whiteshield.png', 'numOfFaces': 2}, {'face': 'blackshield.png', 'numOfFaces': 1}]
+    red = [{'face': 'skull-red.png', 'numOfFaces': 3}, {'face': 'whiteshield-red.png', 'numOfFaces': 2}, {'face': 'blackshield-red.png', 'numOfFaces': 1}]
+    sqt = [{'face': 'skull-sqt.png', 'numOfFaces': 3}, {'face': 'whiteshield-sqt.png', 'numOfFaces': 2}, {'face': 'blackshield-sqt.png', 'numOfFaces': 1}]
+    pot = [{'face': 'skull-pot.png', 'numOfFaces': 3}, {'face': 'whiteshield-pot.png', 'numOfFaces': 2}, {'face': 'blackshield-pot.png', 'numOfFaces': 1}]
+    fh = [{'face': 'skull-fh.png', 'numOfFaces': 3}, {'face': 'whiteshield-fh.png', 'numOfFaces': 2}, {'face': 'blackshield-fh.png', 'numOfFaces': 1}]
+    gen = [{'face': 'skull-gen.png', 'numOfFaces': 3}, {'face': 'whiteshield-gen.png', 'numOfFaces': 2}, {'face': 'blackshield-gen.png', 'numOfFaces': 1}]
+    dread = [{'face': 'skull-dread.png', 'numOfFaces': 3}, {'face': 'whiteshield-dread.png', 'numOfFaces': 2}, {'face': 'blackshield-dread.png', 'numOfFaces': 1}]
     blue = [{'face': 'skull-blue.png', 'numOfFaces': 3}, {'face': 'whiteshield-blue.png', 'numOfFaces': 1}, {'face': 'blackshield-blue.png', 'numOfFaces': 2}]
-    orange = [{'face': 'skull-orange.png', 'numOfFaces': 1}, {'face': 'doubleskull-orange.png', 'numOfFaces': 2}, {'face': 'doublewhiteshield-orange.png', 'numOfFaces': 1}, {'face': 'blackshield-orange.png', 'numOfFaces': 1}, {'face': 'doubleblackshield-orange.png', 'numOfFaces': 1}]
+    orange = [{'face': 'doubleskull-orange.png', 'numOfFaces': 2}, {'face': 'doublewhiteshield-orange.png', 'numOfFaces': 2}, {'face': 'blackshield-orange.png', 'numOfFaces': 1}, {'face': 'doubleblackshield-orange.png', 'numOfFaces': 1}]
     green = [{'face': 'skull-green.png', 'numOfFaces': 2}, {'face': 'whiteshield-green.png', 'numOfFaces': 3}, {'face': 'blackshield-green.png', 'numOfFaces': 1}]
-    purple = [{'face': 'skull-purple.png', 'numOfFaces': 2}, {'face': 'doubleskull-purple.png', 'numOfFaces': 1}, {'face': 'whiteshield-purple.png', 'numOfFaces': 1}, {'face': 'doublewhiteshield-purple.png', 'numOfFaces': 1}, {'face': 'blackshield-purple.png', 'numOfFaces': 1}]
+    pink = [{'face': 'skull-pink.png', 'numOfFaces': 3}, {'face': 'whiteshield-pink.png', 'numOfFaces': 2}, {'face': 'blackshield-pink.png', 'numOfFaces': 1}]
+    purple = [{'face': 'skull-purple.png', 'numOfFaces': 2}, {'face': 'doubleskull-purple.png', 'numOfFaces': 1}, {'face': 'whiteshield-purple.png', 'numOfFaces': 1}, {'face': 'doublewhiteshield-purple.png', 'numOfFaces': 1}, {'face': 'doubleblackshield-purple.png', 'numOfFaces': 1}]
     black = [{'face': 'skull-black.png', 'numOfFaces': 4}, {'face': 'whiteshield-black.png', 'numOfFaces': 1}, {'face': 'blackshield-black.png', 'numOfFaces': 1}]
     yellow = [{'face': 'skull-yellow.png', 'numOfFaces': 1}, {'face': 'doubleskull-yellow.png', 'numOfFaces': 1}, {'face': 'whiteshield-yellow.png', 'numOfFaces': 1}, {'face': 'doublewhiteshield-yellow.png', 'numOfFaces': 1}, {'face': 'blackshield-yellow.png', 'numOfFaces': 1}, {'face': 'doubleblackshield-yellow.png', 'numOfFaces': 1}]
     diceFaceCount = 0
@@ -81,18 +90,32 @@ async def rollHeroQuestCombatDice(message, diceToRoll):
         currentFaceColor = currentRequestedFace['face']
         if (currentFaceColor == 'white'):
             currentFace = white
+        if (currentFaceColor == 'red'):
+            currentFace = red
         elif (currentFaceColor == 'blue'):
             currentFace = blue
         elif (currentFaceColor == 'orange'):
             currentFace = orange
         elif (currentFaceColor == 'green'):
             currentFace = green
+        elif (currentFaceColor == 'pink'):
+            currentFace = pink
         elif (currentFaceColor == 'purple'):
             currentFace = purple
         elif (currentFaceColor == 'black'):
             currentFace = black
         elif (currentFaceColor == 'yellow'):
             currentFace = yellow
+        elif (currentFaceColor == 'sqt'):
+            currentFace = sqt
+        elif (currentFaceColor == 'pot'):
+            currentFace = pot
+        elif (currentFaceColor == 'fh'):
+            currentFace = fh
+        elif (currentFaceColor == 'gen'):
+            currentFace = gen
+        elif (currentFaceColor == 'dread'):
+            currentFace = dread
         
         # Assemble the current color's dice faces
         for coloredFace in currentFace:

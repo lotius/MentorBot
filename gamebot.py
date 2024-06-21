@@ -2,16 +2,41 @@ import os
 import commands
 import discord
 
+import requests
+
+from discord.ext import tasks
 from dotenv import load_dotenv
 
 load_dotenv()
 
 TOKEN = os.getenv('BOT_TOKEN')
 GUILD_NAME = os.getenv('MY_DISCORD_GUILD')
+NEWS_CHANNEL_NAME = os.getenv('NEWS_CHANNEL_NAME')
 
 intents = discord.Intents.all()
 intents.members = True
 client = discord.Client(intents=intents)
+
+# URL to poll, and the search title to poll for
+instruction_url = 'https://instructions.hasbro.com/en-us/all-instructions?search=heroquest'
+title = 'Against the Ogre Horde'
+
+@tasks.loop(minutes=1)
+async def new_instructions_available():
+    response = requests.get(instruction_url)
+
+    if response.text.find(title) != -1:  # Check if the title is found in the response
+        filename = f"{title}.txt"  # Create a filename based on the title
+        if not os.path.isfile('found_instructions/' + filename):  # Check if the file doesn't exist
+            print('Found ' + title + '!')
+            channel = discord.utils.get(client.get_all_channels(), name=NEWS_CHANNEL_NAME)
+            if channel:
+                await channel.send(f"Hey everyone! This is just to inform you that the new quest booklet for {title} is now available on the Hasbro Instructions webpage! https://instructions.hasbro.com")
+                # Write the filename to indicate the quest booklet has been processed
+                with open('found_instructions/' + filename, 'w') as file:
+                    file.write(f"{title} processed")
+            else:
+                print(f"Channel with name '{NEWS_CHANNEL_NAME}' not found.")
 
 @client.event
 async def on_ready():
@@ -23,6 +48,8 @@ async def on_ready():
         f'{client.user} is connected to the following guild:\n'
         f'{guild.name} (id: {guild.id})'
     )
+
+    new_instructions_available.start()
 
 @client.event
 async def on_message(message):

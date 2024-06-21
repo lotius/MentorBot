@@ -32,12 +32,18 @@ async def checkOrcQuestDiceParameters(message, param):
             await message.channel.send('Sorry, but for each die type & color specified you must roll at least 1 die.')
             return
         
+        # Ensure that no more than 3 dice of each requested type & color is rolled.
+        if (numToRoll > 3):
+            await message.channel.send('Sorry, but for each die type & color specified you cannot roll more than 3 dice.')
+            return
+        
         # Ensure that the colors requested are available.
-        if (currentColor != 'whiteattack' and currentColor != 'greyattack' and currentColor != 'blackattack' and \
-                currentColor != 'whitedefend' and currentColor != 'greydefend' and currentColor != 'blackdefend' \
-                and currentColor != 'greenbadass' and currentColor != 'bluebadass'):
-            await message.channel.send('Sorry, but you\'ve included a die color or type that isn\'t available. Available color/types \
-are whiteattack, greyattack, blackattack, whitedefend, greydefend, blackdefend, greenbadass or bluebadass.')
+        if (currentColor != 'whiteattack' and currentColor != 'wa' and currentColor != 'greyattack' and currentColor != 'ga' and \
+                currentColor != 'blackattack' and currentColor != 'ba' and currentColor != 'whitedefend' and currentColor != 'wd' and \
+                currentColor != 'greydefend' and currentColor != 'gd' and currentColor != 'blackdefend' and currentColor != 'bd' and \
+                currentColor != 'greenbadass' and currentColor != 'gba' and currentColor != 'bluebadass' and currentColor != 'bba'):
+            await message.channel.send('Sorry, but you\'ve included a die color/type combination that isn\'t available. Available color/types \
+are whiteattack (wa), greyattack (ga), blackattack (ba), whitedefend (wd), greydefend (gd), blackdefend (bd), greenbadass (gba) or bluebadass (bba).')
             return
         
         for existingDice in diceToRoll:
@@ -80,21 +86,21 @@ async def rollOrcQuestCombatDice(message, diceToRoll):
 
         # Color of current face
         currentFaceColor = currentRequestedFace['face']
-        if (currentFaceColor == 'whiteattack'):
+        if (currentFaceColor == 'whiteattack' or currentFaceColor == 'wa'):
             currentFace = whiteattack
-        elif (currentFaceColor == 'whitedefend'):
+        elif (currentFaceColor == 'whitedefend' or currentFaceColor == 'wd'):
             currentFace = whitedefend
-        elif (currentFaceColor == 'greyattack'):
+        elif (currentFaceColor == 'greyattack' or currentFaceColor == 'ga'):
             currentFace = greyattack
-        elif (currentFaceColor == 'greydefend'):
+        elif (currentFaceColor == 'greydefend' or currentFaceColor == 'gd'):
             currentFace = greydefend
-        elif (currentFaceColor == 'blackattack'):
+        elif (currentFaceColor == 'blackattack' or currentFaceColor == 'ba'):
             currentFace = blackattack
-        elif (currentFaceColor == 'blackdefend'):
+        elif (currentFaceColor == 'blackdefend' or currentFaceColor == 'bd'):
             currentFace = blackdefend
-        elif (currentFaceColor == 'greenbadass'):
+        elif (currentFaceColor == 'greenbadass' or currentFaceColor == 'gba'):
             currentFace = greenbadass
-        elif (currentFaceColor == 'bluebadass'):
+        elif (currentFaceColor == 'bluebadass' or currentFaceColor == 'bba'):
             currentFace = bluebadass
         
         # Assemble the current color's dice faces
