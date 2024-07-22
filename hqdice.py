@@ -1,7 +1,32 @@
+import os
 import random
 import numpy as np
 import cv2
 import discord
+import requests
+from dotenv import load_dotenv
+
+load_dotenv()
+
+DDDICE_API_KEY = str(os.getenv('DDDICE_API_KEY'))
+DDDICE_ROLL_API_ENDPOINT = str(os.getenv('DDDICE_ROLL_API_ENDPOINT'))
+DDDICE_KURGAN_ROOM_ID = str(os.getenv('DDDICE_KURGAN_ROOM_ID'))
+
+async def sendToDDDICE(dddRolledDice):
+    raw_data = {
+        'dice': dddRolledDice,
+        'room': DDDICE_KURGAN_ROOM_ID
+    }
+    
+    headers = {
+        "Authorization": f"Bearer {DDDICE_API_KEY}", 
+        "Content-Type": "application/json", 
+        "Accept": "application/json"
+    }
+
+    response = requests.post(DDDICE_ROLL_API_ENDPOINT, json=raw_data, headers=headers)
+    #print(response.status_code)
+    #print(response.text)
 
 async def checkHeroQuestCombatDiceParameters(message, param):
     params = param.split(' ')
@@ -67,11 +92,6 @@ are blue, orange, green, purple, black, yellow, pink, white, sqt, pot, fh, gen, 
 async def rollHeroQuestCombatDice(message, diceToRoll):
     white = [{'face': 'skull.png', 'numOfFaces': 3}, {'face': 'whiteshield.png', 'numOfFaces': 2}, {'face': 'blackshield.png', 'numOfFaces': 1}]
     red = [{'face': 'skull-red.png', 'numOfFaces': 3}, {'face': 'whiteshield-red.png', 'numOfFaces': 2}, {'face': 'blackshield-red.png', 'numOfFaces': 1}]
-    sqt = [{'face': 'skull-sqt.png', 'numOfFaces': 3}, {'face': 'whiteshield-sqt.png', 'numOfFaces': 2}, {'face': 'blackshield-sqt.png', 'numOfFaces': 1}]
-    pot = [{'face': 'skull-pot.png', 'numOfFaces': 3}, {'face': 'whiteshield-pot.png', 'numOfFaces': 2}, {'face': 'blackshield-pot.png', 'numOfFaces': 1}]
-    fh = [{'face': 'skull-fh.png', 'numOfFaces': 3}, {'face': 'whiteshield-fh.png', 'numOfFaces': 2}, {'face': 'blackshield-fh.png', 'numOfFaces': 1}]
-    gen = [{'face': 'skull-gen.png', 'numOfFaces': 3}, {'face': 'whiteshield-gen.png', 'numOfFaces': 2}, {'face': 'blackshield-gen.png', 'numOfFaces': 1}]
-    dread = [{'face': 'skull-dread.png', 'numOfFaces': 3}, {'face': 'whiteshield-dread.png', 'numOfFaces': 2}, {'face': 'blackshield-dread.png', 'numOfFaces': 1}]
     blue = [{'face': 'skull-blue.png', 'numOfFaces': 3}, {'face': 'whiteshield-blue.png', 'numOfFaces': 1}, {'face': 'blackshield-blue.png', 'numOfFaces': 2}]
     orange = [{'face': 'doubleskull-orange.png', 'numOfFaces': 2}, {'face': 'doublewhiteshield-orange.png', 'numOfFaces': 2}, {'face': 'blackshield-orange.png', 'numOfFaces': 1}, {'face': 'doubleblackshield-orange.png', 'numOfFaces': 1}]
     green = [{'face': 'skull-green.png', 'numOfFaces': 2}, {'face': 'whiteshield-green.png', 'numOfFaces': 3}, {'face': 'blackshield-green.png', 'numOfFaces': 1}]
@@ -79,9 +99,16 @@ async def rollHeroQuestCombatDice(message, diceToRoll):
     purple = [{'face': 'skull-purple.png', 'numOfFaces': 2}, {'face': 'doubleskull-purple.png', 'numOfFaces': 1}, {'face': 'whiteshield-purple.png', 'numOfFaces': 1}, {'face': 'doublewhiteshield-purple.png', 'numOfFaces': 1}, {'face': 'doubleblackshield-purple.png', 'numOfFaces': 1}]
     black = [{'face': 'skull-black.png', 'numOfFaces': 4}, {'face': 'whiteshield-black.png', 'numOfFaces': 1}, {'face': 'blackshield-black.png', 'numOfFaces': 1}]
     yellow = [{'face': 'skull-yellow.png', 'numOfFaces': 1}, {'face': 'doubleskull-yellow.png', 'numOfFaces': 1}, {'face': 'whiteshield-yellow.png', 'numOfFaces': 1}, {'face': 'doublewhiteshield-yellow.png', 'numOfFaces': 1}, {'face': 'blackshield-yellow.png', 'numOfFaces': 1}, {'face': 'doubleblackshield-yellow.png', 'numOfFaces': 1}]
+    sqt = [{'face': 'skull-sqt.png', 'numOfFaces': 3}, {'face': 'whiteshield-sqt.png', 'numOfFaces': 2}, {'face': 'blackshield-sqt.png', 'numOfFaces': 1}]
+    pot = [{'face': 'skull-pot.png', 'numOfFaces': 3}, {'face': 'whiteshield-pot.png', 'numOfFaces': 2}, {'face': 'blackshield-pot.png', 'numOfFaces': 1}]
+    fh = [{'face': 'skull-fh.png', 'numOfFaces': 3}, {'face': 'whiteshield-fh.png', 'numOfFaces': 2}, {'face': 'blackshield-fh.png', 'numOfFaces': 1}]
+    gen = [{'face': 'skull-gen.png', 'numOfFaces': 3}, {'face': 'whiteshield-gen.png', 'numOfFaces': 2}, {'face': 'blackshield-gen.png', 'numOfFaces': 1}]
+    dread = [{'face': 'skull-dread.png', 'numOfFaces': 3}, {'face': 'whiteshield-dread.png', 'numOfFaces': 2}, {'face': 'blackshield-dread.png', 'numOfFaces': 1}]
     diceFaceCount = 0
     diceImages = {}
     rolledDice = []
+    dddRolledDice = []
+    dddiceTheme = ""
 
     # Assemble current dice's faces
     for currentRequestedFace in diceToRoll:
@@ -90,32 +117,46 @@ async def rollHeroQuestCombatDice(message, diceToRoll):
         currentFaceColor = currentRequestedFace['face']
         if (currentFaceColor == 'white'):
             currentFace = white
+            dddiceTheme = "heroquest-combat-dice-lfftlvf4"
         if (currentFaceColor == 'red'):
             currentFace = red
+            dddiceTheme = "heroquest-combat-dice-lfftlvf4"
         elif (currentFaceColor == 'blue'):
             currentFace = blue
+            dddiceTheme = "heroquest-blue-combat-dice-lffwvlt3"
         elif (currentFaceColor == 'orange'):
             currentFace = orange
+            dddiceTheme = "heroquest-orange-combat-dice-lffxaqw1"
         elif (currentFaceColor == 'green'):
             currentFace = green
+            dddiceTheme = "heroquest-green-combat-dice-lffz5gf7"
         elif (currentFaceColor == 'pink'):
             currentFace = pink
+            dddiceTheme = "heroquest-combat-dice-lfftlvf4"
         elif (currentFaceColor == 'purple'):
             currentFace = purple
+            dddiceTheme = "heroquest-purple-combat-dice-lffzqsek"
         elif (currentFaceColor == 'black'):
             currentFace = black
+            dddiceTheme = "heroquest-black-combat-dice-lffwqzve"
         elif (currentFaceColor == 'yellow'):
             currentFace = yellow
+            dddiceTheme = "heroquest-yellow-combat-dice-lfg05rag"
         elif (currentFaceColor == 'sqt'):
             currentFace = sqt
+            dddiceTheme = "heroquest-combat-dice-lfftlvf4"
         elif (currentFaceColor == 'pot'):
             currentFace = pot
+            dddiceTheme = "heroquest-combat-dice-lfftlvf4"
         elif (currentFaceColor == 'fh'):
             currentFace = fh
+            dddiceTheme = "heroquest-combat-dice-lfftlvf4"
         elif (currentFaceColor == 'gen'):
             currentFace = gen
+            dddiceTheme = "heroquest-combat-dice-lfftlvf4"
         elif (currentFaceColor == 'dread'):
             currentFace = dread
+            dddiceTheme = "heroquest-combat-dice-lfftlvf4"
         
         # Assemble the current color's dice faces
         for coloredFace in currentFace:
@@ -125,7 +166,9 @@ async def rollHeroQuestCombatDice(message, diceToRoll):
 
         # Roll the dice and save the appropriate face to an array
         for x in range(int(currentRequestedFace['numToRoll'])):
-            rolledDice.append(diceImages[random.randint(1, 6)])
+            roll = random.randint(1, 6)
+            rolledDice.append(diceImages[roll])
+            dddRolledDice.append({'type': 'd6', 'theme': dddiceTheme, 'value': str(roll)})
                 
         diceFaceCount = 0
         diceImages.clear()
@@ -142,3 +185,5 @@ async def rollHeroQuestCombatDice(message, diceToRoll):
     cv2.imwrite('images/hqdice/results.png', result_image)
 
     await message.channel.send(file=discord.File('images/hqdice/results.png'))
+
+    await sendToDDDICE(dddRolledDice)
