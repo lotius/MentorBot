@@ -4,6 +4,7 @@ import re
 import discord
 
 from hqdice import checkHeroQuestCombatDiceParameters
+from hqdice import rollHeroQuestMovement
 from oqdice import checkOrcQuestDiceParameters
 from scdice import checkSpaceCrusadeCombatDiceParameters
 
@@ -14,6 +15,8 @@ async def process_command(message, command, param):
         await roll(message, param)
     elif (command == 'hqroll'):
         await heroquest_roll(message, param)
+    elif (command == 'hqmove'):
+        await heroquest_moveroll(message, param)
     elif (command == 'oqroll'):
         await orcquest_roll(message, param)
     elif (command == 'rollcolor'):
@@ -53,6 +56,12 @@ sqt, pot, fh, gen, and dread.\n \
 **Examples:** _**!hqroll 2**, **!hqroll 5**, **!hqroll 6 orange**, **!hqroll 4 green**_\n \
 You can also specify multiple dice colors in a single command\n \
 **Examples:** _**!hqroll 2 white 2 orange**, **!hqroll 1 white 3 green 2 blue**_')
+    elif (param == 'hqmove'):
+        await message.channel.send(f'**Roll HeroQuest movement dice**:\n \
+To roll HeroQuest dice use the _**!hqmove**_ command followed by the number of \
+movement dice you wish to roll **(up to 2)**. Optionally, you can include the variant \
+blue movement dice as a parameter.\n \
+**Examples:** _**!hqmove 2**, **!hqmove 1**, **!hqmove 2 blue**')
     elif (param == 'rollcolor'):
         await message.channel.send(f'**Generate random HeroQuest combat dice color**:\n \
 Generates a random enhanced combat dice color for HeroQuest Fans Twitch rewards!\n \
@@ -101,10 +110,23 @@ async def heroquest_roll(message, param):
 
     match = re.match(regex, param)
     if match:
-        await checkHeroQuestCombatDiceParameters(message, param)
+        await rollHeroQuestMovement(message, param)
     else:
         await message.channel.send(f'**{message.author.name}** your input pattern is invalid! Please use _!help hqroll_ \
 to review the proper usage of the _hqroll_ command.')
+        return
+
+async def heroquest_moveroll(message, param):
+    # Determine if regex was matched. A digit can be matched by itself, or a combination of a digit followed by a
+    # word can be matched. If a digit and word combination is matched it is allowed to be repeated.
+    regex = re.compile(r'^[12](?:\s\w+)?$')
+
+    match = re.match(regex, param)
+    if match:
+        await rollHeroQuestMovement(message, param)
+    else:
+        await message.channel.send(f'**{message.author.name}** your input pattern is invalid! Please use _!help hqmove_ \
+to review the proper usage of the _hqmove_ command.')
         return
     
 async def orcquest_roll(message, param):

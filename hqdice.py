@@ -11,22 +11,76 @@ load_dotenv()
 DDDICE_API_KEY = str(os.getenv('DDDICE_API_KEY'))
 DDDICE_ROLL_API_ENDPOINT = str(os.getenv('DDDICE_ROLL_API_ENDPOINT'))
 DDDICE_KURGAN_ROOM_ID = str(os.getenv('DDDICE_KURGAN_ROOM_ID'))
+DDDICE_DISCORD_CHANNEL = str(os.getenv('DDDICE_DISCORD_CHANNEL'))
 
-async def sendToDDDICE(dddRolledDice):
-    raw_data = {
-        'dice': dddRolledDice,
-        'room': DDDICE_KURGAN_ROOM_ID
-    }
+# Send the dice results to dddice.com website. Send the results to a specific room and only if
+# it was rolled from a specific channel within the Discord server.
+async def sendToDDDICE(message, dddRolledDice):
+    if (message.channel.name == DDDICE_DISCORD_CHANNEL):
+        raw_data = {
+            'dice': dddRolledDice,
+            'room': DDDICE_KURGAN_ROOM_ID
+        }
     
-    headers = {
-        "Authorization": f"Bearer {DDDICE_API_KEY}", 
-        "Content-Type": "application/json", 
-        "Accept": "application/json"
-    }
+        headers = {
+            "Authorization": f"Bearer {DDDICE_API_KEY}", 
+            "Content-Type": "application/json", 
+            "Accept": "application/json"
+        }
 
-    response = requests.post(DDDICE_ROLL_API_ENDPOINT, json=raw_data, headers=headers)
-    #print(response.status_code)
-    #print(response.text)
+        response = requests.post(DDDICE_ROLL_API_ENDPOINT, json=raw_data, headers=headers)
+        #print(response.status_code)
+        #print(response.text)
+
+async def rollHeroQuestMovement(message, param):
+    colorToRoll = ""
+    dddiceTheme = ""
+    rolledDice = []
+    dddRolledDice = []
+    diceImages = {}
+    diceFaceCount = 0
+
+    red = [{'face': '1-red.png', 'numOfFaces': 1}, {'face': '2-red.png', 'numOfFaces': 1}, {'face': '3-red.png', 'numOfFaces': 1}, {'face': '4-red.png', 'numOfFaces': 1}, {'face': '5-red.png', 'numOfFaces': 1}, {'face': '6-red.png', 'numOfFaces': 1}]
+    blue = [{'face': '1-blue.png', 'numOfFaces': 1}, {'face': '2-blue.png', 'numOfFaces': 1}, {'face': '3-blue.png', 'numOfFaces': 1}, {'face': '4-blue.png', 'numOfFaces': 1}, {'face': '5-blue.png', 'numOfFaces': 1}, {'face': '6-blue.png', 'numOfFaces': 1}]
+
+    params = param.split(' ')
+
+    # Figure out color to roll
+    if (len(params) == 1 or (len(params) == 2 and params[1].lower().strip() == 'red')):
+        colorToRoll = red
+        dddiceTheme = 'heroquest-red-movement-dice-lfhfjiff'
+    elif (len(params) == 2 and params[1].lower().strip() == 'blue'):
+        colorToRoll = blue
+        dddiceTheme = 'heroquest-blue-movement-dice-lfhhootl'
+    else:
+        await message.channel.send('Sorry, but you can only roll red or blue movement dice.')
+
+    # Assemble the current color's dice faces
+    for currentFace in colorToRoll:
+        for x in range(0, currentFace['numOfFaces']):
+            diceFaceCount = diceFaceCount + 1
+            diceImages[diceFaceCount] = cv2.imread('images/hqdice/transparent/' + currentFace['face'], cv2.IMREAD_UNCHANGED)
+
+    # Roll the dice
+    for x in range(int(params[0])):
+        roll = random.randint(1, 6)
+        rolledDice.append(diceImages[roll])
+        dddRolledDice.append({'type': 'd6', 'theme': dddiceTheme, 'value': str(roll)})
+
+    result_image = np.zeros((100, len(rolledDice) * 108, 4), np.uint8)
+    result_image[:, :, 3] = 0
+	
+    x = 0
+    for currentDiceFace in rolledDice:
+        result_image[0 : 100, 108 * x : 108 * (x + 1), 0:3] = currentDiceFace[:, :, 0:3]
+        result_image[0 : 100, 108 * x : 108 * (x + 1), 3] = currentDiceFace[:, :, 3]
+        x = x + 1
+
+    cv2.imwrite('images/hqdice/results.png', result_image)
+
+    await message.channel.send(file=discord.File('images/hqdice/results.png'))
+
+    await sendToDDDICE(message, dddRolledDice)
 
 async def checkHeroQuestCombatDiceParameters(message, param):
     params = param.split(' ')
@@ -73,22 +127,10 @@ are blue, orange, green, purple, black, yellow, pink, white, sqt, pot, fh, gen, 
                     await message.channel.send('Sorry, but each die color can only be specified once.')
                     return
 
-        # Ensure that the same color was not requested more than once in a single roll command.
-        #if (any(currentColor in dice for dice in diceToRoll)):
-        #    await message.channel.send('Sorry, but each die color can only be specified once.')
-        #    return
-        #else:
-        #    diceToRoll.append({'face': currentColor, 'numToRoll': int(numToRoll)})
-
         diceToRoll.append({'face': currentColor, 'numToRoll': int(numToRoll)})
 
     await rollHeroQuestCombatDice(message, diceToRoll)
     
-# Function takes 3 parameters:
-# 1. An array describing the dice faces of a die to be rolled and how many of each face are on that die.
-# Example: [{'face': 'skull.png', 'numOfSides': 3}, {'face': 'whiteshield.png', 'numOfSides': 2}, {'face': 'blackshield.png', 'numOfSides': 1}]
-# 2. The number of dice to be rolled.
-# 3. The background color of the dice image, defaults to white.
 async def rollHeroQuestCombatDice(message, diceToRoll):
     white = [{'face': 'skull.png', 'numOfFaces': 3}, {'face': 'whiteshield.png', 'numOfFaces': 2}, {'face': 'blackshield.png', 'numOfFaces': 1}]
     red = [{'face': 'skull-red.png', 'numOfFaces': 3}, {'face': 'whiteshield-red.png', 'numOfFaces': 2}, {'face': 'blackshield-red.png', 'numOfFaces': 1}]
@@ -120,7 +162,7 @@ async def rollHeroQuestCombatDice(message, diceToRoll):
             dddiceTheme = "heroquest-combat-dice-lfftlvf4"
         if (currentFaceColor == 'red'):
             currentFace = red
-            dddiceTheme = "heroquest-combat-dice-lfftlvf4"
+            dddiceTheme = "heroquest-red-combat-dice-lz1cecrn"
         elif (currentFaceColor == 'blue'):
             currentFace = blue
             dddiceTheme = "heroquest-blue-combat-dice-lffwvlt3"
@@ -132,7 +174,7 @@ async def rollHeroQuestCombatDice(message, diceToRoll):
             dddiceTheme = "heroquest-green-combat-dice-lffz5gf7"
         elif (currentFaceColor == 'pink'):
             currentFace = pink
-            dddiceTheme = "heroquest-combat-dice-lfftlvf4"
+            dddiceTheme = "heroquest-pink-combat-dice-lz1clxi7"
         elif (currentFaceColor == 'purple'):
             currentFace = purple
             dddiceTheme = "heroquest-purple-combat-dice-lffzqsek"
@@ -144,19 +186,19 @@ async def rollHeroQuestCombatDice(message, diceToRoll):
             dddiceTheme = "heroquest-yellow-combat-dice-lfg05rag"
         elif (currentFaceColor == 'sqt'):
             currentFace = sqt
-            dddiceTheme = "heroquest-combat-dice-lfftlvf4"
+            dddiceTheme = "heroquest-spirit-queen's-torment-combat-dice-lz1deske"
         elif (currentFaceColor == 'pot'):
             currentFace = pot
-            dddiceTheme = "heroquest-combat-dice-lfftlvf4"
+            dddiceTheme = "heroquest-prophecy-of-telor-combat-dice-lz1dmod3"
         elif (currentFaceColor == 'fh'):
             currentFace = fh
-            dddiceTheme = "heroquest-combat-dice-lfftlvf4"
+            dddiceTheme = "heroquest-frozen-horror-combat-dice-lz1d4ggg"
         elif (currentFaceColor == 'gen'):
             currentFace = gen
-            dddiceTheme = "heroquest-combat-dice-lfftlvf4"
+            dddiceTheme = "heroquest-gencon-combat-dice-lz1e930v"
         elif (currentFaceColor == 'dread'):
             currentFace = dread
-            dddiceTheme = "heroquest-combat-dice-lfftlvf4"
+            dddiceTheme = "heroquest-dread-veil-combat-dice-lz1lyex4"
         
         # Assemble the current color's dice faces
         for coloredFace in currentFace:
@@ -186,4 +228,4 @@ async def rollHeroQuestCombatDice(message, diceToRoll):
 
     await message.channel.send(file=discord.File('images/hqdice/results.png'))
 
-    await sendToDDDICE(dddRolledDice)
+    await sendToDDDICE(message, dddRolledDice)
