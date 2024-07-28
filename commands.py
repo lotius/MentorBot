@@ -59,9 +59,9 @@ You can also specify multiple dice colors in a single command\n \
     elif (param == 'hqmove'):
         await message.channel.send(f'**Roll HeroQuest movement dice**:\n \
 To roll HeroQuest dice use the _**!hqmove**_ command followed by the number of \
-movement dice you wish to roll **(up to 2)**. Optionally, you can include the variant \
+movement dice you wish to roll **(up to 4)**. Optionally, you can include the variant \
 blue movement dice as a parameter.\n \
-**Examples:** _**!hqmove 2**, **!hqmove 1**, **!hqmove 2 blue**')
+**Examples:** _**!hqmove 2**, **!hqmove 1**, **!hqmove 4 blue**')
     elif (param == 'rollcolor'):
         await message.channel.send(f'**Generate random HeroQuest combat dice color**:\n \
 Generates a random enhanced combat dice color for HeroQuest Fans Twitch rewards!\n \
@@ -119,7 +119,7 @@ to review the proper usage of the _hqroll_ command.')
 async def heroquest_moveroll(message, param):
     # Determine if regex was matched. A digit can be matched by itself, or a combination of a digit followed by a
     # word can be matched. If a digit and word combination is matched it is allowed to be repeated.
-    regex = re.compile(r'^[12](?:\s\w+)?$')
+    regex = re.compile(r'^[1234](?:\s\w+)?$')
 
     match = re.match(regex, param)
     if match:
