@@ -1,7 +1,36 @@
+import os
 import random
 import numpy as np
 import cv2
 import discord
+import requests
+from dotenv import load_dotenv
+
+load_dotenv()
+
+DDDICE_API_KEY = str(os.getenv('DDDICE_API_KEY'))
+DDDICE_ROLL_API_ENDPOINT = str(os.getenv('DDDICE_ROLL_API_ENDPOINT'))
+DDDICE_KURGAN_ROOM_ID = str(os.getenv('DDDICE_KURGAN_ROOM_ID'))
+DDDICE_DISCORD_CHANNEL = str(os.getenv('DDDICE_DISCORD_CHANNEL'))
+
+# Send the dice results to dddice.com website. Send the results to a specific room and only if
+# it was rolled from a specific channel within the Discord server.
+async def sendToDDDICE(message, dddRolledDice):
+    if (message.channel.name == DDDICE_DISCORD_CHANNEL):
+        raw_data = {
+            'dice': dddRolledDice,
+            'room': DDDICE_KURGAN_ROOM_ID
+        }
+    
+        headers = {
+            "Authorization": f"Bearer {DDDICE_API_KEY}", 
+            "Content-Type": "application/json", 
+            "Accept": "application/json"
+        }
+
+        response = requests.post(DDDICE_ROLL_API_ENDPOINT, json=raw_data, headers=headers)
+        #print(response.status_code)
+        #print(response.text)
 
 async def checkSpaceCrusadeCombatDiceParameters(message, param):
     params = param.split(' ')
@@ -53,6 +82,8 @@ async def rollSpaceCrusadeCombatDice(message, diceToRoll):
     diceFaceCount = 0
     diceImages = {}
     rolledDice = []
+    dddRolledDice = []
+    dddiceTheme = ""
 
     # Assemble current dice's faces
     for currentRequestedFace in diceToRoll:
@@ -61,8 +92,10 @@ async def rollSpaceCrusadeCombatDice(message, diceToRoll):
         currentFaceColor = currentRequestedFace['face']
         if (currentFaceColor == 'white'):
             currentFace = white
+            dddiceTheme = "space-crusade-white-dice-lfgd1lnu"
         elif (currentFaceColor == 'red'):
             currentFace = red
+            dddiceTheme = "space-crusade-red-dice-lfgczoch"
         
         # Assemble the current color's dice faces
         for coloredFace in currentFace:
@@ -72,7 +105,9 @@ async def rollSpaceCrusadeCombatDice(message, diceToRoll):
 
         # Roll the dice and save the appropriate face to an array
         for x in range(int(currentRequestedFace['numToRoll'])):
-            rolledDice.append(diceImages[random.randint(1, 6)])
+            roll = random.randint(1, 6)
+            rolledDice.append(diceImages[roll])
+            dddRolledDice.append({'type': 'd6', 'theme': dddiceTheme, 'value': str(roll)})
                 
         diceFaceCount = 0
         diceImages.clear()
@@ -89,3 +124,5 @@ async def rollSpaceCrusadeCombatDice(message, diceToRoll):
     cv2.imwrite('images/spacecrusade/results.png', result_image)
 
     await message.channel.send(file=discord.File('images/spacecrusade/results.png'))
+
+    await sendToDDDICE(message, dddRolledDice)
