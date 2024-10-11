@@ -116,9 +116,10 @@ async def checkHeroQuestCombatDiceParameters(message, param):
                 currentColor != 'purple' and currentColor != 'black' and currentColor != 'yellow' \
                 and currentColor != 'white' and currentColor != 'pink' and currentColor != 'red' \
                 and currentColor != 'sqt' and currentColor != 'pot' and currentColor != 'fh' \
-                and currentColor != 'gen' and currentColor != 'dread'):
+                and currentColor != 'gen' and currentColor != 'dread' and currentColor != 'gen24' \
+                and currentColor != 'dew' and currentColor != 'jod' and currentColor != 'boss'):
             await message.channel.send('Sorry, but you\'ve included a die color that isn\'t available. Available colors \
-are blue, orange, green, purple, black, yellow, pink, white, sqt, pot, fh, gen, and dread.')
+are blue, orange, green, purple, black, red, yellow, pink, white, boss, sqt, pot, fh, gen, gen24 (or dew), dread, and jod.')
             return
         
         for existingDice in diceToRoll:
@@ -141,11 +142,14 @@ async def rollHeroQuestCombatDice(message, diceToRoll):
     purple = [{'face': 'skull-purple.png', 'numOfFaces': 2}, {'face': 'doubleskull-purple.png', 'numOfFaces': 1}, {'face': 'whiteshield-purple.png', 'numOfFaces': 1}, {'face': 'doublewhiteshield-purple.png', 'numOfFaces': 1}, {'face': 'doubleblackshield-purple.png', 'numOfFaces': 1}]
     black = [{'face': 'skull-black.png', 'numOfFaces': 4}, {'face': 'whiteshield-black.png', 'numOfFaces': 1}, {'face': 'blackshield-black.png', 'numOfFaces': 1}]
     yellow = [{'face': 'skull-yellow.png', 'numOfFaces': 1}, {'face': 'doubleskull-yellow.png', 'numOfFaces': 1}, {'face': 'whiteshield-yellow.png', 'numOfFaces': 1}, {'face': 'doublewhiteshield-yellow.png', 'numOfFaces': 1}, {'face': 'blackshield-yellow.png', 'numOfFaces': 1}, {'face': 'doubleblackshield-yellow.png', 'numOfFaces': 1}]
+    boss = [{'face': 'skull-redboss.png', 'numOfFaces': 1}, {'face': 'doubleskull-redboss.png', 'numOfFaces': 2}, {'face': 'doublewhiteshield-redboss.png', 'numOfFaces': 1}, {'face': 'blackshield-redboss.png', 'numOfFaces': 1}, {'face': 'doubleblackshield-redboss.png', 'numOfFaces': 1}]
     sqt = [{'face': 'skull-sqt.png', 'numOfFaces': 3}, {'face': 'whiteshield-sqt.png', 'numOfFaces': 2}, {'face': 'blackshield-sqt.png', 'numOfFaces': 1}]
     pot = [{'face': 'skull-pot.png', 'numOfFaces': 3}, {'face': 'whiteshield-pot.png', 'numOfFaces': 2}, {'face': 'blackshield-pot.png', 'numOfFaces': 1}]
     fh = [{'face': 'skull-fh.png', 'numOfFaces': 3}, {'face': 'whiteshield-fh.png', 'numOfFaces': 2}, {'face': 'blackshield-fh.png', 'numOfFaces': 1}]
     gen = [{'face': 'skull-gen.png', 'numOfFaces': 3}, {'face': 'whiteshield-gen.png', 'numOfFaces': 2}, {'face': 'blackshield-gen.png', 'numOfFaces': 1}]
+    gen24 = [{'face': 'skull-gen24.png', 'numOfFaces': 3}, {'face': 'whiteshield-gen24.png', 'numOfFaces': 2}, {'face': 'blackshield-gen24.png', 'numOfFaces': 1}]
     dread = [{'face': 'skull-dread.png', 'numOfFaces': 3}, {'face': 'whiteshield-dread.png', 'numOfFaces': 2}, {'face': 'blackshield-dread.png', 'numOfFaces': 1}]
+    jod = [{'face': 'skull-jod.png', 'numOfFaces': 3}, {'face': 'whiteshield-jod.png', 'numOfFaces': 2}, {'face': 'blackshield-jod.png', 'numOfFaces': 1}]
     diceFaceCount = 0
     diceImages = {}
     rolledDice = []
@@ -184,6 +188,9 @@ async def rollHeroQuestCombatDice(message, diceToRoll):
         elif (currentFaceColor == 'yellow'):
             currentFace = yellow
             dddiceTheme = "heroquest-yellow-combat-dice-lfg05rag"
+        elif (currentFaceColor == 'boss'):
+            currentFace = boss
+            dddiceTheme = "heroquest-red-boss-combat-dice-m1qpq8k5"
         elif (currentFaceColor == 'sqt'):
             currentFace = sqt
             dddiceTheme = "heroquest-spirit-queen's-torment-combat-dice-lz1deske"
@@ -196,9 +203,15 @@ async def rollHeroQuestCombatDice(message, diceToRoll):
         elif (currentFaceColor == 'gen'):
             currentFace = gen
             dddiceTheme = "heroquest-gencon-combat-dice-lz1e930v"
+        elif (currentFaceColor == 'gen24' or currentFaceColor == 'dew'):
+            currentFace = gen24
+            dddiceTheme = "heroquest-gencon-2024-combat-dice-m01rq6ia"
         elif (currentFaceColor == 'dread'):
             currentFace = dread
             dddiceTheme = "heroquest-dread-veil-combat-dice-lz1lyex4"
+        elif (currentFaceColor == 'jod'):
+            currentFace = jod
+            dddiceTheme = "heroquest-jungles-of-delthrakk-combat-diceice-m01stff3"
         
         # Assemble the current color's dice faces
         for coloredFace in currentFace:

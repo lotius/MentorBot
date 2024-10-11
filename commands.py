@@ -52,14 +52,14 @@ To roll HeroQuest dice use the _**!hqroll**_ command followed by the number of d
 to roll (up to 15). Optionally, you can include one of the many German variant dice colors \
 in order to roll that set instead of standard dice, and even multiple colors at once.\n\n \
 Available variant dice colors are blue, orange, green, purple, pink, red, yellow, black, \
-sqt, pot, fh, gen, and dread.\n \
+boss, sqt, pot, fh, gen, gen24 (or dew), dread, and jod.\n \
 **Examples:** _**!hqroll 2**, **!hqroll 5**, **!hqroll 6 orange**, **!hqroll 4 green**_\n \
 You can also specify multiple dice colors in a single command\n \
 **Examples:** _**!hqroll 2 white 2 orange**, **!hqroll 1 white 3 green 2 blue**_')
     elif (param == 'hqmove'):
         await message.channel.send(f'**Roll HeroQuest movement dice**:\n \
 To roll HeroQuest dice use the _**!hqmove**_ command followed by the number of \
-movement dice you wish to roll **(up to 4)**. Optionally, you can include the variant \
+movement dice you wish to roll **(up to 6)**. Optionally, you can include the variant \
 blue movement dice as a parameter.\n \
 **Examples:** _**!hqmove 2**, **!hqmove 1**, **!hqmove 4 blue**')
     elif (param == 'rollcolor'):
@@ -106,11 +106,11 @@ async def roll(message, param):
 async def heroquest_roll(message, param):
     # Determine if regex was matched. A digit can be matched by itself, or a combination of a digit followed by a
     # word can be matched. If a digit and word combination is matched it is allowed to be repeated.
-    regex = re.compile(r'^(\d{1,2}|(\d{1,2}\s[a-zA-Z]+\b\s?)+)$')
+    regex = re.compile(r'^(\d{1,2}|(\d{1,2}\s[a-zA-Z0-9]+\b\s?)+)$')
 
     match = re.match(regex, param)
     if match:
-        await rollHeroQuestMovement(message, param)
+        await checkHeroQuestCombatDiceParameters(message, param)
     else:
         await message.channel.send(f'**{message.author.name}** your input pattern is invalid! Please use _!help hqroll_ \
 to review the proper usage of the _hqroll_ command.')
@@ -119,7 +119,7 @@ to review the proper usage of the _hqroll_ command.')
 async def heroquest_moveroll(message, param):
     # Determine if regex was matched. A digit can be matched by itself, or a combination of a digit followed by a
     # word can be matched. If a digit and word combination is matched it is allowed to be repeated.
-    regex = re.compile(r'^[1234](?:\s\w+)?$')
+    regex = re.compile(r'^[123456](?:\s\w+)?$')
 
     match = re.match(regex, param)
     if match:
