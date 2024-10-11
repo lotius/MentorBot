@@ -77,8 +77,8 @@ are red and/or white.')
 # Example: [{'face': 'white-1.png', 'numOfFaces': 1}, {'face': 'white-2.png', 'numOfFaces': 1}, {'face': 'white-0.png', 'numOfFaces': 4}]
 # 2. The number of dice to be rolled.
 async def rollSpaceCrusadeCombatDice(message, diceToRoll):
-    white = [{'face': 'white-1.png', 'numOfFaces': 1}, {'face': 'white-2.png', 'numOfFaces': 1}, {'face': 'white-0.png', 'numOfFaces': 4}]
-    red = [{'face': 'red-1.png', 'numOfFaces': 1}, {'face': 'red-2.png', 'numOfFaces': 1}, {'face': 'red-3.png', 'numOfFaces': 1}, {'face': 'red-0.png', 'numOfFaces': 3}]
+    white = [{'face': 'white-0.png', 'numOfFaces': 4}, {'face': 'white-1.png', 'numOfFaces': 1}, {'face': 'white-2.png', 'numOfFaces': 1}]
+    red = [{'face': 'red-0.png', 'numOfFaces': 3}, {'face': 'red-1.png', 'numOfFaces': 1}, {'face': 'red-2.png', 'numOfFaces': 1}, {'face': 'red-3.png', 'numOfFaces': 1}]
     diceFaceCount = 0
     diceImages = {}
     rolledDice = []
