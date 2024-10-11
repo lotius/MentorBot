@@ -51,9 +51,9 @@ async def checkOrcQuestDiceParameters(message, param):
         currentColor = currentParam[1]
     
         totalDiceRolled = totalDiceRolled + numToRoll
-        # Ensure both the current numToRoll and the cumulative total dice rolled do not exceed 10.
-        if (totalDiceRolled > 10):
-            await message.channel.send('Sorry, but you cannot roll more than 10 total combat dice in a single command.')
+        # Ensure both the current numToRoll and the cumulative total dice rolled do not exceed 12.
+        if (totalDiceRolled > 12):
+            await message.channel.send('Sorry, but you cannot roll more than 12 total combat dice in a single command.')
             return
         
         # Ensure that at least 1 die of each requested type & color is rolled.
