@@ -19,7 +19,7 @@ client = discord.Client(intents=intents)
 
 # URL to poll, and the search title to poll for
 instruction_url = 'https://instructions.hasbro.com/en-us/all-instructions?search=heroquest'
-titles = ['Against the Ogre Horde', 'The Jungles of Delthrak', 'First Light']  
+titles = ['Against the Ogre Horde', 'Jungles of Delthrak', 'First Light']  
 
 @tasks.loop(minutes=5)
 async def new_instructions_available():

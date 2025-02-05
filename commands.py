@@ -52,7 +52,7 @@ To roll HeroQuest dice use the _**!hqroll**_ command followed by the number of d
 to roll (up to 15). Optionally, you can include one of the many German variant dice colors \
 in order to roll that set instead of standard dice, and even multiple colors at once.\n\n \
 Available variant dice colors are blue, orange, green, purple, pink, red, yellow, black, \
-boss, sqt, pot, fh, gen, gen24 (or dew), dread, and jod.\n \
+boss, sqt, pot, fh, gen, gen24 (or dew), dread, jod, and fl.\n \
 **Examples:** _**!hqroll 2**, **!hqroll 5**, **!hqroll 6 orange**, **!hqroll 4 green**_\n \
 You can also specify multiple dice colors in a single command\n \
 **Examples:** _**!hqroll 2 white 2 orange**, **!hqroll 1 white 3 green 2 blue**_')
