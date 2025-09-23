@@ -71,3 +71,5 @@ If you look in Discord you'll see that your bot is now in your server! However, 
 
 We need to set up our Python environment and actually run the bot for it to log in and respond to user input.
 
+## Setting up Python
+
