@@ -18,7 +18,7 @@ Click on New Application in the upper-right corner. Give the application a name,
 
 <img width="2500" height="1227" alt="image" src="https://github.com/user-attachments/assets/c9923527-696c-464b-be4c-63608686e378" />
 
-You can fill out a description, some tags to help identify your application, but they are not required. Next, go to the Installation section on the left, and choose Guild Install on the right:
+You can fill out a description, add an application icon (I have the Mentor image in place, as you can see), some tags to help identify your application, but they are not required. Next, go to the Installation section on the left, and choose Guild Install on the right:
 
 <img width="2487" height="782" alt="image" src="https://github.com/user-attachments/assets/1c9b9490-f360-40a6-9610-2c01b4c4cd6d" />
 
