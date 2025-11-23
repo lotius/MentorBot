@@ -52,7 +52,7 @@ To roll HeroQuest dice use the _**!hqroll**_ command followed by the number of d
 to roll (up to 15). Optionally, you can include one of the many German variant dice colors \
 in order to roll that set instead of standard dice, and even multiple colors at once.\n\n \
 Available variant dice colors are blue, orange, green, purple, pink, red, yellow, black, \
-boss, sqt, pot, fh, gen, gen24 (or dew), dread, jod, and fl.\n \
+boss, sqt, pot, fh, gen, gen24 (or dew), dread, jod, copd (or joe), and fl.\n \
 **Examples:** _**!hqroll 2**, **!hqroll 5**, **!hqroll 6 orange**, **!hqroll 4 green**_\n \
 You can also specify multiple dice colors in a single command\n \
 **Examples:** _**!hqroll 2 white 2 orange**, **!hqroll 1 white 3 green 2 blue**_')
@@ -60,8 +60,8 @@ You can also specify multiple dice colors in a single command\n \
         await message.channel.send(f'**Roll HeroQuest movement dice**:\n \
 To roll HeroQuest dice use the _**!hqmove**_ command followed by the number of \
 movement dice you wish to roll **(up to 6)**. Optionally, you can include the variant \
-blue movement dice as a parameter.\n \
-**Examples:** _**!hqmove 2**, **!hqmove 1**, **!hqmove 4 blue**')
+blue, black, or First Light movement dice as a parameter.\n \
+**Examples:** _**!hqmove 2**, **!hqmove 1 fl**, **!hqmove 1 blue**, **!hqmove 2 black**')
     elif (param == 'rollcolor'):
         await message.channel.send(f'**Generate random HeroQuest combat dice color**:\n \
 Generates a random enhanced combat dice color for HeroQuest Fans Twitch rewards!\n \

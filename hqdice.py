@@ -42,6 +42,7 @@ async def rollHeroQuestMovement(message, param):
 
     red = [{'face': '1-red.png', 'numOfFaces': 1}, {'face': '2-red.png', 'numOfFaces': 1}, {'face': '3-red.png', 'numOfFaces': 1}, {'face': '4-red.png', 'numOfFaces': 1}, {'face': '5-red.png', 'numOfFaces': 1}, {'face': '6-red.png', 'numOfFaces': 1}]
     blue = [{'face': '1-blue.png', 'numOfFaces': 1}, {'face': '2-blue.png', 'numOfFaces': 1}, {'face': '3-blue.png', 'numOfFaces': 1}, {'face': '4-blue.png', 'numOfFaces': 1}, {'face': '5-blue.png', 'numOfFaces': 1}, {'face': '6-blue.png', 'numOfFaces': 1}]
+    black = [{'face': '1-black.png', 'numOfFaces': 1}, {'face': '2-black.png', 'numOfFaces': 1}, {'face': '3-black.png', 'numOfFaces': 1}, {'face': '4-black.png', 'numOfFaces': 1}, {'face': '5-black.png', 'numOfFaces': 1}, {'face': '6-black.png', 'numOfFaces': 1}]
     fl = [{'face': '1-fl.png', 'numOfFaces': 1}, {'face': '2-fl.png', 'numOfFaces': 1}, {'face': '3-fl.png', 'numOfFaces': 1}, {'face': '4-fl.png', 'numOfFaces': 1}, {'face': '5-fl.png', 'numOfFaces': 1}, {'face': '6-fl.png', 'numOfFaces': 1}]
     params = param.split(' ')
 
@@ -52,11 +53,14 @@ async def rollHeroQuestMovement(message, param):
     elif (len(params) == 2 and params[1].lower().strip() == 'blue'):
         colorToRoll = blue
         dddiceTheme = 'heroquest-blue-movement-dice-lfhhootl'
+    elif (len(params) == 2 and (params[1].lower().strip() == 'black' or params[1].lower().strip() == 'joe')):
+        colorToRoll = black
+        dddiceTheme = 'heroquest-black-movement-dice-mbb6ffc0'
     elif (len(params) == 2 and params[1].lower().strip() == 'fl'):
         colorToRoll = fl
         dddiceTheme = 'heroquest-first-light-movement-dice-m5sp3203'
     else:
-        await message.channel.send('Sorry, but you can only roll red or blue movement dice.')
+        await message.channel.send('Sorry, but you can only roll red, blue, black, or First Light movement dice.')
 
     # Assemble the current color's dice faces
     for currentFace in colorToRoll:
@@ -121,9 +125,9 @@ async def checkHeroQuestCombatDiceParameters(message, param):
                 and currentColor != 'sqt' and currentColor != 'pot' and currentColor != 'fh' \
                 and currentColor != 'gen' and currentColor != 'dread' and currentColor != 'gen24' \
                 and currentColor != 'dew' and currentColor != 'jod' and currentColor != 'boss' \
-                and currentColor != 'fl'):
+                and currentColor != 'fl' and currentColor != 'copd' and currentColor != 'joe'):
             await message.channel.send('Sorry, but you\'ve included a die color that isn\'t available. Available colors \
-are blue, orange, green, purple, black, red, yellow, pink, white, boss, sqt, pot, fh, gen, gen24 (or dew), dread, jod, and fl.')
+are blue, orange, green, purple, black, red, yellow, pink, white, copd, boss, sqt, pot, fh, gen, gen24 (or dew), dread, jod, and fl.')
             return
         
         for existingDice in diceToRoll:
@@ -145,6 +149,7 @@ async def rollHeroQuestCombatDice(message, diceToRoll):
     pink = [{'face': 'skull-pink.png', 'numOfFaces': 3}, {'face': 'whiteshield-pink.png', 'numOfFaces': 2}, {'face': 'blackshield-pink.png', 'numOfFaces': 1}]
     purple = [{'face': 'skull-purple.png', 'numOfFaces': 2}, {'face': 'doubleskull-purple.png', 'numOfFaces': 1}, {'face': 'whiteshield-purple.png', 'numOfFaces': 1}, {'face': 'doublewhiteshield-purple.png', 'numOfFaces': 1}, {'face': 'doubleblackshield-purple.png', 'numOfFaces': 1}]
     black = [{'face': 'skull-black.png', 'numOfFaces': 4}, {'face': 'whiteshield-black.png', 'numOfFaces': 1}, {'face': 'blackshield-black.png', 'numOfFaces': 1}]
+    copd = [{'face': 'skull-copd.png', 'numOfFaces': 3}, {'face': 'whiteshield-copd.png', 'numOfFaces': 2}, {'face': 'blackshield-copd.png', 'numOfFaces': 1}]
     yellow = [{'face': 'skull-yellow.png', 'numOfFaces': 1}, {'face': 'doubleskull-yellow.png', 'numOfFaces': 1}, {'face': 'whiteshield-yellow.png', 'numOfFaces': 1}, {'face': 'doublewhiteshield-yellow.png', 'numOfFaces': 1}, {'face': 'blackshield-yellow.png', 'numOfFaces': 1}, {'face': 'doubleblackshield-yellow.png', 'numOfFaces': 1}]
     boss = [{'face': 'skull-redboss.png', 'numOfFaces': 1}, {'face': 'doubleskull-redboss.png', 'numOfFaces': 2}, {'face': 'doublewhiteshield-redboss.png', 'numOfFaces': 1}, {'face': 'blackshield-redboss.png', 'numOfFaces': 1}, {'face': 'doubleblackshield-redboss.png', 'numOfFaces': 1}]
     sqt = [{'face': 'skull-sqt.png', 'numOfFaces': 3}, {'face': 'whiteshield-sqt.png', 'numOfFaces': 2}, {'face': 'blackshield-sqt.png', 'numOfFaces': 1}]
@@ -220,6 +225,9 @@ async def rollHeroQuestCombatDice(message, diceToRoll):
         elif (currentFaceColor == 'fl'):
             currentFace = fl
             dddiceTheme = "heroquest-first-light-combat-dice-m5spwiqr"
+        elif (currentFaceColor == 'copd' or currentFaceColor == 'joe'):
+            currentFace = copd
+            dddiceTheme = "heroquest-crypt-of-perpetual-darkness-combat-dice-mbb79n1q"
         
         # Assemble the current color's dice faces
         for coloredFace in currentFace:
